@@ -39,5 +39,20 @@ angular.module('s3Demo', [])
    }
 })
 .service('dataService', function($http) {
+  this.storgeImage = function(rawData, fileName) {
+    //we gotta do basic string manipulation to grab that data:image text and
+    //send it to AWS. so we gotta create newImage object
+
+    var imageExtension = imageData.split(';')[0].split('/')
+    imageExtension = imageExtension[imageExtension.length-1];
+
+    var newImage = {
+      imageName: fileName,
+      imageBody: rawData,
+      imageExtension: imageExtension,
+      userEmail: 'akang2@gmail.com'
+    }
+    return $http.post('/api/newimage', newImage);
+  }
 
 })
