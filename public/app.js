@@ -6,7 +6,10 @@ angular.module('s3Demo', [])
       elem.on('change', function(changeEvent) {
         var reader = new FileReader();
 
-        reader.readAsDataURL()
+        //the line below is what converts the file to base64. IMPORTANT
+        //this happens asynchronously. important cause some images
+        //are fuckin huge. 
+        reader.readAsDataURL(changeEvent.target.files[0]);
       })
     }
   }
