@@ -9,7 +9,7 @@ const express = require('express'),
 AWS.config.update({
   accessKeyId: config.aws.ACCESS_KEY,
   secretAccessKey: config.aws.SECRET_KEY,
-  region: ''
+  region: 'us-west-1'
 })
 
 //before we do this, we gotta configure s3. look above for AWS.config
@@ -26,6 +26,23 @@ app.use('/node_modules', express.static('./node_modules'));
 
 
 app.post('/api/newimage', function(req, res, next) {
+  //we need to create a buffer. what is a buffer? don't matter
+  //.replce is a str method. 1st takes in regex, 2nd replaces what the regex
+  //finds with the 2nd param
+  const buf = new Buffer(req.body.imageBody.replace(/^data:image\/w+;base64,/, ''))
+  const bucketName = 'alexk/' + req.body.userEmail;
+  const params = {
+    Bucket: bucketName,
+    Key: req.body.imageName,
+    Body: buf,
+    ContentType: 'image/' + req.body.imageExtension,
+    ACL: 'public-read'
+  }
+
+  s3.upload(params, function(err, data) {
+    if(err) return res.status(500).send(err);
+    res.status(200).json(data);
+  })
 
 })
 
