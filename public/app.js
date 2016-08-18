@@ -23,7 +23,7 @@ angular.module('s3Demo', [])
 //
 // })
 //
-.directive('fileRead', function() {
+.directive('fileRead', function(dataService) {
   return {
        restrict: 'A',
        link: function(scope, elem, attrs) {
