@@ -29,7 +29,8 @@ app.post('/api/newimage', function(req, res, next) {
   //we need to create a buffer. what is a buffer? don't matter
   //.replce is a str method. 1st takes in regex, 2nd replaces what the regex
   //finds with the 2nd param
-  const buf = new Buffer(req.body.imageBody.replace(/^data:image\/w+;base64,/, ''))
+  // const buf = new Buffer(req.body.imageBody.replace(/^data:image\/w+;base64,/, ''))
+  const buf = new Buffer(req.body.imageBody.replace(/^data:image\/\w+;base64,/, ''), 'base64')
   const bucketName = 'alexk/' + req.body.userEmail;
   const params = {
     Bucket: bucketName,
